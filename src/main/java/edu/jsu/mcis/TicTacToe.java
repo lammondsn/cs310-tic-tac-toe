@@ -1,33 +1,41 @@
 package edu.jsu.mcis;
 
+import javax.swing.*;
+
 public class TicTacToe {
-    
+
     public static final int DEFAULT_WIDTH = 3;
-    
+
     public static void main(String[] args) {
         
-        /* Set initial size of game board (default is 3x3) */
-
-        int width = DEFAULT_WIDTH;
+        // SUPPLY YOUR CODE FOR THE EMPTY SECTIONS AS COMMENTED BELOW
         
-        /* If a different size is provided as an argument, use it instead */
+        /* Set initial size of game board to the default (which is 3 x 3) */
 
-        if(args.length >= 1) {
-            
-            try {
-                width = Integer.parseInt(args[0]);
-            }
-            catch(NumberFormatException e) {}
-            
+        int size = DEFAULT_WIDTH;
+        
+        if (args.length > 0) {
+            size = Integer.parseInt(args[0]);
         }
+            
+        
+        /* If a different size is provided as a command-line argument, use 
+           this size instead of the default */
+
+        // SUPPLY YOUR CODE HERE
         
         /* Create Controller */
 
-        TicTacToeController controller = new TicTacToeController(width);
+        TicTacToeController controller = new TicTacToeController(size);
         
-        /* Start Main Loop */
+        /* Start GUI */
+
+        JFrame win = new JFrame("Tic-Tac-Toe");
+        win.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        controller.start();
+        win.add(controller.getView());
+        win.pack();
+        win.setVisible(true);
         
     }
     

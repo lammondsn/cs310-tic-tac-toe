@@ -1,8 +1,10 @@
 package edu.jsu.mcis;
 
-import edu.jsu.mcis.TicTacToeModel.Result;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JButton;
 
-public class TicTacToeController {
+public class TicTacToeController implements ActionListener {
 
     private final TicTacToeModel model;
     private final TicTacToeView view;
@@ -11,49 +13,73 @@ public class TicTacToeController {
 
     public TicTacToeController(int width) {
         
-        /* Initialize model, view, and width */
+        /* Initialize model and view */
 
         model = new TicTacToeModel(width);
-        view = new TicTacToeView();
+        view = new TicTacToeView(this, width);
         
     }
-
-    public void start() {
     
-        /* MAIN LOOP (repeats until game is over) */
+    public String getMarkAsString(int row, int col) {
+        
+        return (model.getMark(row, col).toString());
+        
+    }
+    
+    public TicTacToeView getView() {
+        
+        return view;
+        
+    }
+    
+    @Override
+    public void actionPerformed(ActionEvent event) {
+        
+        /* This is the event handler for button clicks. */
+        
+        // SUPPLY YOUR CODE FOR THE EMPTY SECTIONS AS COMMENTED BELOW
+        
+        /* First, acquire a reference to the clicked button and get its name */
+        
+        String name = ((JButton) event.getSource()).getName();
+        
+        /* Parse the row and column from the name (see Line 30 of the View) */
+        int row = Integer.parseInt(name.substring(6,7));
+        int col = Integer.parseInt(name.substring(7,8));
+        
+        // SUPPLY YOUR CODE HERE
 
-        /* Display the board using the View's "showBoard()", then use
-           "getNextMove()" to get the next move from the player.  Enter
-           the move (using the Model's "makeMark()", or display an error
-           using the View's "showInputError()" if the move is invalid. */
+        /* Make a mark at the specified row and column */
+        if (model.makeMark(row, col) == true) {
+     
+        }
+        // SUPPLY YOUR CODE HERE
+        
+        /* Update the view to show the new mark */
 
-        // INSERT YOUR CODE HERE
-         boolean gameOver;
+        view.updateSquares();
+        
+        /* Get new result */
+        
+        TicTacToeModel.Result result = model.getResult();
+        
+        /* If the game is over, disable the squares and show the result */
 
-        do{
+        if (result != TicTacToeModel.Result.NONE) {
 
-            view.showBoard(model.toString());
-
-            TicTacToeMove move = view.getNextMove(model.isXTurn());
-
-            if(!model.makeMark(move.getRow(), move.getCol()))
-
-                System.out.println("Location invalid or already marked!");
-
+            view.disableSquares();
+            view.showResult(result.toString());
             
-
-            gameOver = (model.getResult() != Result.NONE);
-
-        }while (!gameOver);
-
+        }
         
+        /* Otherwise, leave the result field empty */
         
-        /* After the game is over, show the final board and the winner */
+        else {
+            
+            view.clearResult();
+            
+        }
 
-        view.showBoard(model.toString());
-
-        view.showResult(model.getResult().toString());
-        
     }
     
 }
